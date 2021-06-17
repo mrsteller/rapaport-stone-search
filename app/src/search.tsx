@@ -60,30 +60,41 @@ export const Search = (props: SearchProps) => {
   const [stones, setStones] = useState<Array<Stone>>([]);
   const [search, setSearch] = useState<string>("");
 
-  const [shapes, setShapes] = useState<Array<string>>(shapeList);
-  const [color, setColor] = useState<Array<string>>(colorList);
-  const [clarity, setClarity] = useState<Array<string>>(clarityList);
-
   useEffect(() => {
     setStones(stoneList);
   }, []);
 
   useEffect(() => {
-    const filterShape = stoneList.filter((s) => s.shape.includes(search));
-    const filterColor = stoneList.filter((s) => s.color?.includes(search));
-    const filterClarity = stoneList.filter((s) => s.clarity.includes(search));
+    const filterShape = stoneList.filter((s) =>
+      s.shape.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
+    const filterColor = stoneList.filter((s) =>
+      s.color?.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
+    const filterClarity = stoneList.filter((s) =>
+      s.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
 
     setStones(filterShape.concat(filterColor).concat(filterClarity));
   }, [search]);
 
   const getLabel = (stone: Stone) => {
-    const colorLabel = `Color: ${stone.color} in ${stone.type}`;
     const shapeLabel = `Shape: ${stone.shape} in ${stone.type}`;
     const clarityLabel = `Clarity: ${stone.clarity} in ${stone.type}`;
+    const colorLabel = `Color: ${stone.color} in ${stone.type}`;
 
-    return `${stone.shape} in ${stone.type} ${stone.clarity} ${
-      stone.color ?? ""
-    }`;
+    const result = stone.shape
+      .toLocaleLowerCase()
+      .startsWith(search.toLocaleLowerCase())
+      ? shapeLabel
+      : stone.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+      ? clarityLabel
+      : stone.color &&
+        stone.color.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+      ? colorLabel
+      : "";
+
+    return result;
   };
 
   return (
