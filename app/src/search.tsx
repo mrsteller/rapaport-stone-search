@@ -1,52 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, TextField } from "@material-ui/core";
-//import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Autocomplete } from "@material-ui/lab";
-import stoneList from "./stones.json";
-
-const shapeList = [
-  "Round",
-  "‌Princess",
-  "‌Emerald",
-  "‌Asscher",
-  "‌Radiant",
-  "‌Square‌",
-  "‌Radiant",
-  "‌Pear",
-  "‌Oval‌",
-];
-const colorList = [
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-];
-
-const clarityList = [
-  "FL",
-  "IF",
-  "VVS1",
-  "VVS2",
-  "VS1",
-  "VS2",
-  "SI1",
-  "SI2",
-  "SI3",
-  "I1",
-  "I2",
-  "I3",
-];
-
-type SearchProps = {};
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Container,
+  Grid,
+  Icon,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import Picture from "./diamond.svg";
+//import { StonesList } from "./stone-list";
+import stoneData from "./stones.json";
 
 type Stone = {
   id: number;
@@ -56,22 +27,41 @@ type Stone = {
   color?: string;
 };
 
-export const Search = (props: SearchProps) => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {},
+    cardWrapper: {},
+    card: { position: "relative" }, //margin: theme.spacing(2) },
+    avatar: {
+      position: "absolute",
+      top: theme.spacing(1),
+      right: theme.spacing(1),
+    },
+    clarity: {
+      position: "absolute",
+      bottom: theme.spacing(3),
+      right: theme.spacing(1),
+    },
+  })
+);
+
+export const Search = () => {
+  const classes = useStyles();
   const [stones, setStones] = useState<Array<Stone>>([]);
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
-    setStones(stoneList);
+    setStones(stoneData);
   }, []);
 
   useEffect(() => {
-    const filterShape = stoneList.filter((s) =>
+    const filterShape = stoneData.filter((s) =>
       s.shape.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
     );
-    const filterColor = stoneList.filter((s) =>
+    const filterColor = stoneData.filter((s) =>
       s.color?.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
     );
-    const filterClarity = stoneList.filter((s) =>
+    const filterClarity = stoneData.filter((s) =>
       s.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
     );
 
@@ -112,6 +102,32 @@ export const Search = (props: SearchProps) => {
               <TextField {...params} label="Search" variant="outlined" />
             )}
           />
+        </Box>
+        <Box py={4}>
+          {/* <StonesList stones={stones} /> */}
+          <Grid spacing={2} container>
+            {stones.map((s, i) => (
+              <Grid item xs={3}>
+                <Card key={i} className={classes.card}>
+                  <CardMedia />
+                  <CardContent>
+                    {s.color && (
+                      <Avatar sizes="small" className={classes.avatar}>
+                        <Typography variant="body2">{s.color}</Typography>
+                      </Avatar>
+                    )}
+                  </CardContent>
+                  <CardContent>
+                    <Typography variant="overline">{s.shape}</Typography>
+                    <Typography variant="h5">{s.type}</Typography>
+                    <IconButton size="small" className={classes.clarity}>
+                      {s.clarity}
+                    </IconButton>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Container>
     </div>
