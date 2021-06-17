@@ -1,4 +1,12 @@
-export const Shape = [
+export type Stone = {
+  id: number;
+  type: string;
+  shape: string;
+  clarity: string;
+  color?: string;
+};
+
+export const shape = [
   "Round",
   "‌Princess",
   "‌Emerald",
@@ -9,7 +17,7 @@ export const Shape = [
   "‌Pear",
   "‌Oval‌",
 ];
-export const Color = [
+export const color = [
   "D",
   "E",
   "F",
@@ -25,7 +33,7 @@ export const Color = [
   "P",
 ];
 
-export const Clarity = [
+export const clarity = [
   "FL",
   "IF",
   "VVS1",
@@ -39,5 +47,5 @@ export const Clarity = [
   "I2",
   "I3",
 ];
-
-export default {};
+const models = { shape, clarity, color };
+export default models;

@@ -18,15 +18,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Picture from "./diamond.svg";
 //import { StonesList } from "./stone-list";
 import stoneData from "./stones.json";
-import { formatWithOptions } from "util";
-
-type Stone = {
-  id: number;
-  type: string;
-  shape: string;
-  clarity: string;
-  color?: string;
-};
+import { Stone, shape, clarity, color } from "./models";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       top: theme.spacing(1),
       right: theme.spacing(1),
+      opacity: "0.5",
     },
     clarity: {
       position: "absolute",
@@ -46,13 +39,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const stoneTypes = ["Diamond", "Ruby", "Sapphire"];
+
 export const Search = () => {
   const classes = useStyles();
   const [stones, setStones] = useState<Array<Stone>>([]);
   const [search, setSearch] = useState<string>("");
-  const [options, setOptions] = useState<Array<{ label: string; value: any }>>(
-    []
-  );
+  const [options, setOptions] = useState<Array<string>>([]);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     setStones(stoneData);
@@ -70,6 +64,18 @@ export const Search = () => {
     );
 
     setStones(filterShape.concat(filterColor).concat(filterClarity));
+
+    const shapeOptions = shape.filter((s) =>
+      s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
+
+    const clarityOptions = clarity.filter((s) =>
+      s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
+    const colorOptions = color.filter((s) =>
+      s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    );
+    setOptions(shapeOptions.concat(clarityOptions).concat(colorOptions));
   }, [search]);
 
   const getLabel = (stone: Stone) => {
@@ -92,8 +98,8 @@ export const Search = () => {
   };
 
   const onChangeSearch = (e: any) => setSearch(e.target.value);
-  const onClickItem = (value: any) => {
-    console.log(value);
+  const onClickItem = (o: any) => {
+    console.log(o.type);
   };
 
   return (
@@ -107,11 +113,12 @@ export const Search = () => {
             fullWidth
             value={search}
             onChange={onChangeSearch}
+            defaultValue={selectedOption}
           />
-          <Menu open={options.length > 0}>
+          <Menu open={false}>
             {options.map((o) => (
-              <MenuItem button onClick={() => onClickItem(o.value)}>
-                {o.label}
+              <MenuItem button onClick={() => onClickItem(o)}>
+                {o}
               </MenuItem>
             ))}
           </Menu>
