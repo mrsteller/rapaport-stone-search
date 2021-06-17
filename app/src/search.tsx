@@ -8,8 +8,8 @@ import {
   CardMedia,
   Container,
   Grid,
-  Icon,
-  IconButton,
+  Menu,
+  MenuItem,
   TextField,
   Tooltip,
   Typography,
@@ -18,6 +18,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Picture from "./diamond.svg";
 //import { StonesList } from "./stone-list";
 import stoneData from "./stones.json";
+import { formatWithOptions } from "util";
 
 type Stone = {
   id: number;
@@ -49,6 +50,9 @@ export const Search = () => {
   const classes = useStyles();
   const [stones, setStones] = useState<Array<Stone>>([]);
   const [search, setSearch] = useState<string>("");
+  const [options, setOptions] = useState<Array<{ label: string; value: any }>>(
+    []
+  );
 
   useEffect(() => {
     setStones(stoneData);
@@ -87,11 +91,31 @@ export const Search = () => {
     return result;
   };
 
+  const onChangeSearch = (e: any) => setSearch(e.target.value);
+  const onClickItem = (value: any) => {
+    console.log(value);
+  };
+
   return (
     <div>
       <Container>
         <Box>
-          <Autocomplete
+          <TextField
+            variant="outlined"
+            name="search"
+            label="Search"
+            fullWidth
+            value={search}
+            onChange={onChangeSearch}
+          />
+          <Menu open={options.length > 0}>
+            {options.map((o) => (
+              <MenuItem button onClick={() => onClickItem(o.value)}>
+                {o.label}
+              </MenuItem>
+            ))}
+          </Menu>
+          {/* <Autocomplete
             id="stone-search"
             fullWidth
             inputValue={search}
@@ -101,7 +125,7 @@ export const Search = () => {
             renderInput={(params) => (
               <TextField {...params} label="Search" variant="outlined" />
             )}
-          />
+          /> */}
         </Box>
         <Box py={4}>
           {/* <StonesList stones={stones} /> */}
@@ -111,18 +135,18 @@ export const Search = () => {
                 <Card key={i} className={classes.card}>
                   <CardMedia />
                   <CardContent>
-                    {s.color && (
+                    <Tooltip title="Clarity">
                       <Avatar sizes="small" className={classes.avatar}>
-                        <Typography variant="body2">{s.color}</Typography>
+                        <Typography variant="body2">{s.clarity}</Typography>
                       </Avatar>
-                    )}
+                    </Tooltip>
                   </CardContent>
                   <CardContent>
                     <Typography variant="overline">{s.shape}</Typography>
                     <Typography variant="h5">{s.type}</Typography>
-                    <IconButton size="small" className={classes.clarity}>
-                      {s.clarity}
-                    </IconButton>
+                    {s.color && (
+                      <Typography variant="body2">Color: {s.color}</Typography>
+                    )}
                   </CardContent>
                 </Card>
               </Grid>
