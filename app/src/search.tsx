@@ -15,14 +15,17 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Picture from "./diamond.svg";
-//import { StonesList } from "./stone-list";
 import stoneData from "./stones.json";
 import { Stone, shape, clarity, color } from "./models";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
+    searchBar: {}, //position: "fixed" },
+    dropdown: {
+      width: theme.breakpoints.values.sm,
+      maxHeight: 300,
+    },
     cardWrapper: {},
     card: { position: "relative" }, //margin: theme.spacing(2) },
     avatar: {
@@ -50,7 +53,19 @@ export const Search = () => {
 
   useEffect(() => {
     setStones(stoneData);
+    initialiseOptions();
   }, []);
+
+  const initialiseOptions = () => {
+    const allShapes = stoneTypes
+      .map((t) => shape.map((s) => `Shape: ${s} in ${t}`))
+      .flat();
+    const allColors = color.map((s) => `Color: ${s} in Diamond`);
+    const allClarity = stoneTypes
+      .map((t) => clarity.map((s) => `Clarity: ${s} in ${t}`))
+      .flat();
+    setOptions(allShapes.concat(allColors).concat(allClarity));
+  };
 
   useEffect(() => {
     const filterShape = stoneData.filter((s) =>
@@ -62,51 +77,41 @@ export const Search = () => {
     const filterClarity = stoneData.filter((s) =>
       s.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
     );
-
     setStones(filterShape.concat(filterColor).concat(filterClarity));
 
-    const shapeOptions = shape.filter((s) =>
-      s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-    );
-
-    const clarityOptions = clarity.filter((s) =>
-      s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-    );
-    const colorOptions = color.filter((s) =>
-      s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-    );
-    setOptions(shapeOptions.concat(clarityOptions).concat(colorOptions));
+    // const shapeOptions = shape.filter((s) =>
+    //   s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    // );
+    // const clarityOptions = clarity.filter((s) =>
+    //   s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    // );
+    // const colorOptions = color.filter((s) =>
+    //   s.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+    // );
+    //setOptions(shapeOptions.concat(clarityOptions).concat(colorOptions));
   }, [search]);
 
-  const getLabel = (stone: Stone) => {
-    const shapeLabel = `Shape: ${stone.shape} in ${stone.type}`;
-    const clarityLabel = `Clarity: ${stone.clarity} in ${stone.type}`;
-    const colorLabel = `Color: ${stone.color} in ${stone.type}`;
+  const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
 
-    const result = stone.shape
-      .toLocaleLowerCase()
-      .startsWith(search.toLocaleLowerCase())
-      ? shapeLabel
-      : stone.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-      ? clarityLabel
-      : stone.color &&
-        stone.color.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-      ? colorLabel
-      : "";
-
-    return result;
+  const openMenu = (event: React.MouseEvent<HTMLInputElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+  const closeMenu = () => {
+    setMenuAnchor(null);
+  };
+  const onClickItem = (item: any) => {
+    setSelectedOption(item);
+    console.log(item);
   };
 
   const onChangeSearch = (e: any) => setSearch(e.target.value);
-  const onClickItem = (o: any) => {
-    console.log(o.type);
-  };
 
   return (
     <div>
       <Container>
         <Box>
           <TextField
+            className={classes.searchBar} //display:fixed
             variant="outlined"
             name="search"
             label="Search"
@@ -114,10 +119,30 @@ export const Search = () => {
             value={search}
             onChange={onChangeSearch}
             defaultValue={selectedOption}
+            onClick={openMenu}
           />
-          <Menu open={false}>
-            {options.map((o) => (
-              <MenuItem button onClick={() => onClickItem(o)}>
+          <Menu
+            className={classes.dropdown}
+            id="search-dropdown"
+            anchorEl={menuAnchor}
+            keepMounted
+            open={Boolean(menuAnchor)}
+            onClose={closeMenu}
+            getContentAnchorEl={null}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            PaperProps={{
+              className: classes.dropdown,
+            }}
+          >
+            {options.map((o, i) => (
+              <MenuItem key={i} button onClick={() => onClickItem(o)}>
                 {o}
               </MenuItem>
             ))}
@@ -138,9 +163,9 @@ export const Search = () => {
           {/* <StonesList stones={stones} /> */}
           <Grid spacing={2} container>
             {stones.map((s, i) => (
-              <Grid item xs={3}>
+              <Grid item xs={3} key={i}>
                 <Card key={i} className={classes.card}>
-                  <CardMedia />
+                  {/* <CardMedia image={Picture} /> */}
                   <CardContent>
                     <Tooltip title="Clarity">
                       <Avatar sizes="small" className={classes.avatar}>
