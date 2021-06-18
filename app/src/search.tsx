@@ -21,13 +21,13 @@ import { Stone, shape, clarity, color } from "./models";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
-    searchBar: {}, //position: "fixed" },
+    searchBar: {},
     dropdown: {
       width: theme.breakpoints.values.sm,
       maxHeight: 300,
     },
     cardWrapper: {},
-    card: { position: "relative" }, //margin: theme.spacing(2) },
+    card: { position: "relative" },
     avatar: {
       position: "absolute",
       top: theme.spacing(1),
@@ -43,6 +43,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const stoneTypes = ["Diamond", "Ruby", "Sapphire"];
+//TODO: options as objects with labels, value, type etc
+//open menu on type not click, check input still works
+//styles - fixed bar and header
+//filter options
+//configure click option
 
 export const Search = () => {
   const classes = useStyles();
