@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Card,
-  CardActionArea,
   CardContent,
   CardMedia,
   Container,
@@ -15,9 +14,9 @@ import {
 } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ReactComponent as Picture } from "./assets/diamond.svg";
-import diamond from "./assets/diamond-radiant.jpg";
-import ruby from "./assets/ruby.jpg";
-import sapphire from "./assets/sapphire.jpg";
+import diamond from "./assets/diamond-side.jpg";
+import ruby from "./assets/ruby-dark.jpg";
+import sapphire from "./assets/sapphire-blue.jpg";
 
 import stoneData from "./stones.json";
 import { Stone, stoneTypes, shape, clarity, color } from "./models";
@@ -34,9 +33,12 @@ const useStyles = makeStyles((theme: Theme) =>
     cardWrapper: {},
     card: {
       position: "relative",
-      // backgroundColor: theme.palette.secondary.contrastText,
-      height: 150,
     },
+    media: {
+      height: 140,
+      backgroundPosition: "unset",
+    },
+    cardContent: { minHeight: 83 },
     avatar: {
       position: "absolute",
       top: theme.spacing(1),
@@ -125,6 +127,11 @@ export const Search = () => {
   return (
     <div>
       <Container>
+        <Box textAlign="center" p={4}>
+          <Typography variant="h3" color="primary">
+            Rapaport Stone Listings
+          </Typography>
+        </Box>
         <Box>
           <Autocomplete
             filterOptions={createFilterOptions({
@@ -159,36 +166,31 @@ export const Search = () => {
             {stones.map((s, i) => (
               <Grid item xs={12} sm={6} md={3} key={i}>
                 <Card key={i} className={classes.card}>
-                  <CardActionArea>
-                    <CardMedia
-                      image={
-                        s.type === "Sappire"
-                          ? sapphire
-                          : s.type === "Ruby"
-                          ? ruby
-                          : diamond
-                      }
-                      title={`${s.shape} ${s.type}`}
-                    />
-                    <CardContent>
-                      <Tooltip title="Clarity">
-                        <Avatar sizes="small" className={classes.avatar}>
-                          <Typography variant="body2">{s.clarity}</Typography>
-                        </Avatar>
-                      </Tooltip>
-                    </CardContent>
-                    <CardContent>
-                      <Typography variant="overline">{s.shape}</Typography>
-                      <Typography variant="h5" color="secondary">
-                        {s.type}
-                      </Typography>
-                      {s.color && (
-                        <Typography variant="body2">
-                          Color: {s.color}
-                        </Typography>
-                      )}
-                    </CardContent>
-                  </CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={
+                      s.type === "Sapphire"
+                        ? sapphire
+                        : s.type === "Ruby"
+                        ? ruby
+                        : diamond
+                    }
+                    title={`${s.shape} ${s.type}`}
+                  />
+                  <Tooltip title="Clarity">
+                    <Avatar sizes="small" className={classes.avatar}>
+                      <Typography variant="body2">{s.clarity}</Typography>
+                    </Avatar>
+                  </Tooltip>
+                  <CardContent className={classes.cardContent}>
+                    <Typography variant="overline">{s.shape}</Typography>
+                    <Typography variant="h5" color="secondary">
+                      {s.type}
+                    </Typography>
+                    {s.color && (
+                      <Typography variant="body2">Color: {s.color}</Typography>
+                    )}
+                  </CardContent>
                 </Card>
               </Grid>
             ))}
