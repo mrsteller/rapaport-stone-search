@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-//import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, createFilterOptions } from "@material-ui/lab";
 import {
   Avatar,
   Box,
@@ -129,7 +129,7 @@ export const Search = () => {
     <div>
       <Container>
         <Box>
-          <TextField
+          {/* <TextField
             className={classes.searchBar} //display:fixed
             variant="outlined"
             name="search"
@@ -177,21 +177,26 @@ export const Search = () => {
                 {o.label}
               </MenuItem>
             ))}
-          </Menu>
-          {/* <Autocomplete
+          </Menu> */}
+          <Autocomplete
+            filterOptions={createFilterOptions({
+              matchFrom: "start",
+              stringify: (option) => option.value,
+            })}
             id="stone-search"
             fullWidth
             inputValue={search}
             onInputChange={(e, value) => {
               setSearch(value);
             }}
+            value={selectedOption}
             onChange={(e, v) => setSelectedOption(v)}
             options={options ?? []}
             getOptionLabel={(option) => option.label}
             renderInput={(params) => (
               <TextField {...params} label="Search" variant="outlined" />
             )}
-          /> */}
+          />
         </Box>
         <Box py={4}>
           <Grid spacing={2} container>
