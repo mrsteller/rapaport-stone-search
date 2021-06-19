@@ -47,5 +47,7 @@ export const clarity = [
   "I2",
   "I3",
 ];
+export const stoneTypes = ["Diamond", "Ruby", "Sapphire"];
+
 const models = { shape, clarity, color };
 export default models;
