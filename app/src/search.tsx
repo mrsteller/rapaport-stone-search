@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import stoneData from "./stones.json";
-import { Stone, stoneTypes, shape, clarity, color } from "./models";
+import { Stone, stoneTypes, shape, clarity, color, attributes } from "./models";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,12 +50,6 @@ export const Search = () => {
   const [search, setSearch] = useState<string>("");
   const [options, setOptions] = useState<Array<any>>([]);
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-  const [selectedType, setSelectedType] = useState<Array<string>>(stoneTypes);
-  const [selectedAttribute, setSelectedAttribute] = useState<Array<string>>([
-    "Shape",
-    "Color",
-    "Clarity",
-  ]);
 
   useEffect(() => {
     setStones(stoneData);
@@ -86,9 +80,22 @@ export const Search = () => {
   useEffect(() => {
     console.log("selected", selectedOption);
     if (selectedOption) {
-      const filteredStones = stoneData.filter(
+      let filteredStones = stoneData.filter(
         (s) => s.type === selectedOption.type
       );
+      if (selectedOption.label.startsWith("Shape")) {
+        filteredStones = filteredStones.filter(
+          (s) => s.shape === selectedOption.value
+        );
+      } else if (selectedOption.label.startsWith("Color")) {
+        filteredStones = filteredStones.filter(
+          (s) => s.color === selectedOption.value
+        );
+      } else if (selectedOption.label.startsWith("Clarity")) {
+        filteredStones = filteredStones.filter(
+          (s) => s.clarity === selectedOption.value
+        );
+      }
       setStones(filteredStones);
     } else {
       setStones(stoneData);

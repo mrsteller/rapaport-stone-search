@@ -6,6 +6,8 @@ export type Stone = {
   color?: string;
 };
 
+export const attributes = ["Shape", "Color", "Clarity"];
+
 export const shape = [
   "Round",
   "‌Princess",
@@ -49,5 +51,5 @@ export const clarity = [
 ];
 export const stoneTypes = ["Diamond", "Ruby", "Sapphire"];
 
-const models = { shape, clarity, color };
+const models = { shape, clarity, color, attributes };
 export default models;
