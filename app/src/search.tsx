@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Autocomplete } from "@material-ui/lab";
+//import { Autocomplete } from "@material-ui/lab";
 import {
   Avatar,
   Box,
   Card,
   CardContent,
-  CardMedia,
+  //  CardMedia,
   Container,
   Grid,
   Menu,
   MenuItem,
+  IconButton,
   TextField,
   Tooltip,
   Typography,
@@ -17,6 +18,7 @@ import {
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import stoneData from "./stones.json";
 import { Stone, stoneTypes, shape, clarity, color } from "./models";
+import { ArrowDropDown, Close } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     dropdown: {
       width: theme.breakpoints.values.sm,
       maxHeight: 300,
+      marginLeft: "-8em",
     },
     cardWrapper: {},
     card: { position: "relative" },
@@ -47,15 +50,24 @@ const useStyles = makeStyles((theme: Theme) =>
 //styles - fixed bar and header
 //filter options
 //configure click option
+type Option = { label: string; type: string; value: string };
 
 export const Search = () => {
   const classes = useStyles();
   const [stones, setStones] = useState<Array<Stone>>([]);
   const [search, setSearch] = useState<string>("");
   const [options, setOptions] = useState<Array<any>>([]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
-  useEffect(() => console.log("selected", selectedOption), [selectedOption]);
+  // useEffect(() => {
+  //   console.log("selected", selectedOption);
+  //   if (selectedOption !== null) {
+  //     const filteredStones = stones.filter(
+  //       (s) => s.type === selectedOption.type
+  //     );
+  //     setStones(filteredStones);
+  //   }
+  // }, [selectedOption, stones]);
 
   useEffect(() => {
     setStones(stoneData);
@@ -83,103 +95,105 @@ export const Search = () => {
     setOptions(allShapes.concat(allColors).concat(allClarity));
   };
 
-  useEffect(() => {
-    // const filterShape = stoneData.filter((s) =>
-    //   s.shape.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-    // );
-    // const filterColor = stoneData.filter((s) =>
-    //   s.color?.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-    // );
-    // const filterClarity = stoneData.filter((s) =>
-    //   s.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-    // );
-    // setStones(filterShape.concat(filterColor).concat(filterClarity));
+  // useEffect(() => {
+  //   const filterShape = stoneData.filter((s) =>
+  //     s.shape.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+  //   );
+  //   const filterColor = stoneData.filter((s) =>
+  //     s.color?.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+  //   );
+  //   const filterClarity = stoneData.filter((s) =>
+  //     s.clarity.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+  //   );
+  //   setStones(filterShape.concat(filterColor).concat(filterClarity));
 
-    if (search !== "") {
-      const filterOptions = options.filter((o) =>
-        o.value.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
-      );
-      setOptions(filterOptions);
-    } else {
-      initialiseOptions();
-    }
-  }, [search, options]);
+  //   if (search !== "" && options !== null) {
+  //     const filterOptions = options.filter((o) =>
+  //       o.value.toLocaleLowerCase().startsWith(search.toLocaleLowerCase())
+  //     );
+  //     setOptions(filterOptions);
+  //   } else {
+  //     initialiseOptions();
+  //   }
+  // }, [search, options]);
 
-  const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
-
-  const openMenu = (event: React.MouseEvent<HTMLInputElement>) => {
-    setMenuAnchor(event.currentTarget);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
   };
   const closeMenu = () => {
-    setMenuAnchor(null);
-  };
-  const onClickItem = (item: any) => {
-    setSelectedOption(item);
-    console.log(item);
-  };
-
-  const onChangeSearch = (e: any) => {
-    setSearch(e.target.value);
+    setAnchorEl(null);
   };
 
   return (
     <div>
       <Container>
         <Box>
-          {/* <TextField
+          <TextField
             className={classes.searchBar} //display:fixed
             variant="outlined"
             name="search"
             label="Search"
             fullWidth
             value={search}
-            onChange={onChangeSearch}
-            onClick={openMenu}
-          /> */}
-          {/* <Menu
+            onChange={(e) => setSearch(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <>
+                  {search !== "" && (
+                    <IconButton onClick={() => setSearch("")}>
+                      <Close />
+                    </IconButton>
+                  )}
+                  <IconButton onClick={openMenu}>
+                    <ArrowDropDown />
+                  </IconButton>
+                </>
+              ),
+            }}
+          />
+          <Menu
             className={classes.dropdown}
             id="search-dropdown"
-            anchorEl={menuAnchor}
+            anchorEl={anchorEl}
             keepMounted
-            open={Boolean(menuAnchor)}
+            open={Boolean(anchorEl)}
             onClose={closeMenu}
             getContentAnchorEl={null}
             anchorOrigin={{
               vertical: "bottom",
-              horizontal: "center",
+              horizontal: "left",
             }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "center",
+              horizontal: "left",
             }}
             PaperProps={{
               className: classes.dropdown,
             }}
           >
             {options.map((o, i) => (
-              <MenuItem key={i} button onClick={() => onClickItem(o)}>
+              <MenuItem key={i} button onClick={() => setSelectedOption(o)}>
                 {o.label}
               </MenuItem>
             ))}
-          </Menu> */}
-          <Autocomplete
+          </Menu>
+          {/* <Autocomplete
             id="stone-search"
             fullWidth
             inputValue={search}
             onInputChange={(e, value) => {
               setSearch(value);
-              console.log(value, e);
             }}
             onChange={(e, v) => setSelectedOption(v)}
-            options={options}
+            options={options ?? []}
             getOptionLabel={(option) => option.label}
             renderInput={(params) => (
               <TextField {...params} label="Search" variant="outlined" />
             )}
-          />
+          /> */}
         </Box>
         <Box py={4}>
-          {/* <StonesList stones={stones} /> */}
           <Grid spacing={2} container>
             {stones.map((s, i) => (
               <Grid item xs={3} key={i}>
