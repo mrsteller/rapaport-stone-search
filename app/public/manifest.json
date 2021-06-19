@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "diamond radiant.png",
+      "src": "diamond-radiant.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "diamond radiant.png",
+      "src": "diamond-radiant.png",
       "type": "image/png",
       "sizes": "512x512"
     }

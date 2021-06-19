@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   Card,
+  CardActionArea,
   CardContent,
   CardMedia,
   Container,
@@ -13,7 +14,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { ReactComponent as Picture } from "./diamond.svg";
+import { ReactComponent as Picture } from "./assets/diamond.svg";
+import diamond from "./assets/diamond-radiant.jpg";
+import ruby from "./assets/ruby.jpg";
+import sapphire from "./assets/sapphire.jpg";
+
 import stoneData from "./stones.json";
 import { Stone, stoneTypes, shape, clarity, color } from "./models";
 
@@ -29,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     cardWrapper: {},
     card: {
       position: "relative",
-      backgroundColor: theme.palette.secondary.contrastText,
+      // backgroundColor: theme.palette.secondary.contrastText,
       height: 150,
     },
     avatar: {
@@ -37,7 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(1),
       right: theme.spacing(1),
       opacity: "0.75",
-      backgroundColor: theme.palette.secondary.main,
     },
     clarity: {
       position: "absolute",
@@ -155,23 +159,36 @@ export const Search = () => {
             {stones.map((s, i) => (
               <Grid item xs={12} sm={6} md={3} key={i}>
                 <Card key={i} className={classes.card}>
-                  <CardMedia image="%PUBLIC_URL%/diamond-radiant.png" />
-                  <CardContent>
-                    <Tooltip title="Clarity">
-                      <Avatar sizes="small" className={classes.avatar}>
-                        <Typography variant="body2">{s.clarity}</Typography>
-                      </Avatar>
-                    </Tooltip>
-                  </CardContent>
-                  <CardContent>
-                    <Typography variant="overline">{s.shape}</Typography>
-                    <Typography variant="h5" color="secondary">
-                      {s.type}
-                    </Typography>
-                    {s.color && (
-                      <Typography variant="body2">Color: {s.color}</Typography>
-                    )}
-                  </CardContent>
+                  <CardActionArea>
+                    <CardMedia
+                      image={
+                        s.type === "Sappire"
+                          ? sapphire
+                          : s.type === "Ruby"
+                          ? ruby
+                          : diamond
+                      }
+                      title={`${s.shape} ${s.type}`}
+                    />
+                    <CardContent>
+                      <Tooltip title="Clarity">
+                        <Avatar sizes="small" className={classes.avatar}>
+                          <Typography variant="body2">{s.clarity}</Typography>
+                        </Avatar>
+                      </Tooltip>
+                    </CardContent>
+                    <CardContent>
+                      <Typography variant="overline">{s.shape}</Typography>
+                      <Typography variant="h5" color="secondary">
+                        {s.type}
+                      </Typography>
+                      {s.color && (
+                        <Typography variant="body2">
+                          Color: {s.color}
+                        </Typography>
+                      )}
+                    </CardContent>
+                  </CardActionArea>
                 </Card>
               </Grid>
             ))}
