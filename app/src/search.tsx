@@ -127,12 +127,13 @@ export const Search = () => {
   return (
     <div>
       <Container>
-        <Box textAlign="center" p={4}>
-          <Typography variant="h3" color="primary">
-            Rapaport Stone Listings
-          </Typography>
-        </Box>
         <Box>
+          <Box textAlign="center" p={4}>
+            <Typography variant="h3" color="primary">
+              Rapaport Stone Listings
+            </Typography>
+          </Box>
+
           <Autocomplete
             filterOptions={createFilterOptions({
               stringify: (option) => option.value,
@@ -152,7 +153,7 @@ export const Search = () => {
             )}
           />
         </Box>
-        <Box py={4}>
+        <Box py={4} className={classes.cardWrapper}>
           {stones.length === 0 && (
             <>
               <Box textAlign="center" className={classes.noStones}>
