@@ -5,7 +5,7 @@ import {
   Box,
   Card,
   CardContent,
-  //  CardMedia,
+  CardMedia,
   Container,
   Grid,
   TextField,
@@ -27,12 +27,17 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "-8em",
     },
     cardWrapper: {},
-    card: { position: "relative" },
+    card: {
+      position: "relative",
+      backgroundColor: theme.palette.secondary.contrastText,
+      height: 150,
+    },
     avatar: {
       position: "absolute",
       top: theme.spacing(1),
       right: theme.spacing(1),
-      opacity: "0.5",
+      opacity: "0.75",
+      backgroundColor: theme.palette.secondary.main,
     },
     clarity: {
       position: "absolute",
@@ -150,7 +155,7 @@ export const Search = () => {
             {stones.map((s, i) => (
               <Grid item xs={12} sm={6} md={3} key={i}>
                 <Card key={i} className={classes.card}>
-                  {/* <CardMedia image={Picture} /> */}
+                  <CardMedia image="%PUBLIC_URL%/diamond-radiant.png" />
                   <CardContent>
                     <Tooltip title="Clarity">
                       <Avatar sizes="small" className={classes.avatar}>
@@ -160,7 +165,9 @@ export const Search = () => {
                   </CardContent>
                   <CardContent>
                     <Typography variant="overline">{s.shape}</Typography>
-                    <Typography variant="h5">{s.type}</Typography>
+                    <Typography variant="h5" color="secondary">
+                      {s.type}
+                    </Typography>
                     {s.color && (
                       <Typography variant="body2">Color: {s.color}</Typography>
                     )}

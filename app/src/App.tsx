@@ -23,7 +23,9 @@ function App() {
       <div>
         <Container maxWidth="md" className={classes.root}>
           <Box textAlign="center" p={4}>
-            <Typography variant="h3">Rapaport Stone Listings</Typography>
+            <Typography variant="h3" color="primary">
+              Rapaport Stone Listings
+            </Typography>
           </Box>
           <Search />
         </Container>
