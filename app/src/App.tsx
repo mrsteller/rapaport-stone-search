@@ -1,7 +1,14 @@
 import React from "react";
 import { Container, Typography, Box } from "@material-ui/core";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import { theme } from "./theme";
 import { Search } from "./search";
+import "@fontsource/shippori-mincho";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -12,14 +19,16 @@ const useStyles = makeStyles((theme: Theme) =>
 function App() {
   const classes = useStyles();
   return (
-    <div>
-      <Container maxWidth="md" className={classes.root}>
-        <Box textAlign="center" p={4}>
-          <Typography variant="h3">Rapaport Stone Listings</Typography>
-        </Box>
-        <Search />
-      </Container>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        <Container maxWidth="md" className={classes.root}>
+          <Box textAlign="center" p={4}>
+            <Typography variant="h3">Rapaport Stone Listings</Typography>
+          </Box>
+          <Search />
+        </Container>
+      </div>
+    </ThemeProvider>
   );
 }
 
