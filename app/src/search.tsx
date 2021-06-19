@@ -13,8 +13,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { ReactComponent as Picture } from "./diamond.svg";
 import stoneData from "./stones.json";
-import { Stone, stoneTypes, shape, clarity, color, attributes } from "./models";
+import { Stone, stoneTypes, shape, clarity, color } from "./models";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,6 +38,16 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       bottom: theme.spacing(3),
       right: theme.spacing(1),
+    },
+    noStones: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-around",
+      alignItems: "center",
+    },
+    noStonesPic: {
+      maxHeight: "30vh",
+      opacity: "50%",
     },
   })
 );
@@ -126,9 +137,18 @@ export const Search = () => {
           />
         </Box>
         <Box py={4}>
+          {stones.length === 0 && (
+            <>
+              <Box textAlign="center" className={classes.noStones}>
+                <Picture width={"50%"} className={classes.noStonesPic} />
+
+                <Typography>No stones...</Typography>
+              </Box>
+            </>
+          )}
           <Grid spacing={2} container>
             {stones.map((s, i) => (
-              <Grid item xs={3} key={i}>
+              <Grid item xs={12} sm={6} md={3} key={i}>
                 <Card key={i} className={classes.card}>
                   {/* <CardMedia image={Picture} /> */}
                   <CardContent>
