@@ -50,6 +50,12 @@ export const Search = () => {
   const [search, setSearch] = useState<string>("");
   const [options, setOptions] = useState<Array<any>>([]);
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const [selectedType, setSelectedType] = useState<Array<string>>(stoneTypes);
+  const [selectedAttribute, setSelectedAttribute] = useState<Array<string>>([
+    "Shape",
+    "Color",
+    "Clarity",
+  ]);
 
   useEffect(() => {
     setStones(stoneData);
@@ -57,20 +63,20 @@ export const Search = () => {
   }, []);
 
   const initialiseOptions = () => {
-    const allShapes = stoneTypes
-      .map((t) =>
-        shape.map((s) => {
+    const allShapes = shape
+      .map((s) =>
+        stoneTypes.map((t) => {
           return { value: s, type: t, label: `Shape: ${s} in ${t}` };
         })
       )
       .flat();
-    const allColors = color.map((s) => {
-      return { value: s, type: "Diamond", label: `Color: ${s} in Diamond` };
+    const allColors = color.map((c) => {
+      return { value: c, type: "Diamond", label: `Color: ${c} in Diamond` };
     });
-    const allClarity = stoneTypes
-      .map((t) =>
-        clarity.map((s) => {
-          return { value: s, type: t, label: `Clarity: ${s} in ${t}` };
+    const allClarity = clarity
+      .map((c) =>
+        stoneTypes.map((t) => {
+          return { value: c, type: t, label: `Clarity: ${c} in ${t}` };
         })
       )
       .flat();
@@ -78,7 +84,7 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    console.log(selectedOption);
+    console.log("selected", selectedOption);
     if (selectedOption) {
       const filteredStones = stoneData.filter(
         (s) => s.type === selectedOption.type
@@ -95,7 +101,6 @@ export const Search = () => {
         <Box>
           <Autocomplete
             filterOptions={createFilterOptions({
-              matchFrom: "start",
               stringify: (option) => option.value,
             })}
             id="stone-search"
