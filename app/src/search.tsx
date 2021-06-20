@@ -124,6 +124,40 @@ export const Search = () => {
     }
   }, [selectedOption]);
 
+  useEffect(() => {
+    const filteredShapes = shape
+      .filter((s) =>
+        s.toLocaleLowerCase().substr(0, 2).includes(search.toLocaleLowerCase())
+      )
+      .map((s) =>
+        stoneTypes.map((t) => {
+          return { value: s, type: t, label: `Shape: ${s} in ${t}` };
+        })
+      )
+      .flat();
+    const filteredColors = color
+      .filter((c) =>
+        c.toLocaleLowerCase().substr(0, 2).includes(search.toLocaleLowerCase())
+      )
+      .map((c) => {
+        return { value: c, type: "Diamond", label: `Color: ${c} in Diamond` };
+      });
+    const filteredClarity = clarity
+      .filter((c) =>
+        c.toLocaleLowerCase().substr(0, 2).includes(search.toLocaleLowerCase())
+      )
+      .map((c) =>
+        stoneTypes.map((t) => {
+          return { value: c, type: t, label: `Clarity: ${c} in ${t}` };
+        })
+      )
+      .flat();
+    if (search.length === 1)
+      setOptions(filteredShapes.concat(filteredColors).concat(filteredClarity));
+
+    //setOptions()
+  }, [search]);
+
   return (
     <div>
       <Container>
@@ -135,7 +169,9 @@ export const Search = () => {
           </Box>
 
           <Autocomplete
+            autoHighlight
             filterOptions={createFilterOptions({
+              // matchFrom: "start",
               stringify: (option) => option.value,
             })}
             id="stone-search"
