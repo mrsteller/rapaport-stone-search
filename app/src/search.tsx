@@ -152,10 +152,10 @@ export const Search = () => {
         })
       )
       .flat();
+
     if (search.length === 1)
       setOptions(filteredShapes.concat(filteredColors).concat(filteredClarity));
-
-    //setOptions()
+    if (search.length === 0) initialiseOptions();
   }, [search]);
 
   return (
