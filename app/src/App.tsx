@@ -7,7 +7,7 @@ import {
   ThemeProvider,
 } from "@material-ui/core/styles";
 import { theme } from "./theme";
-import { Search } from "./search";
+import { Search } from "./stone-search/search";
 import "@fontsource/shippori-mincho";
 
 const useStyles = makeStyles((theme: Theme) =>
