@@ -10,7 +10,13 @@ import { StoneList } from "./stone-list";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
-    searchBar: {},
+    topWrapper: {
+      padding: "0 0 2em 0",
+      position: "sticky",
+      top: 0,
+      backgroundColor: "#ffffff",
+      zIndex: 100,
+    },
     cardWrapper: {},
     dropdown: {
       width: theme.breakpoints.values.sm,
@@ -117,7 +123,7 @@ export const Search = () => {
   return (
     <div>
       <Container>
-        <Box>
+        <Box className={classes.topWrapper}>
           <Box textAlign="center" p={4}>
             <Typography variant="h3" color="primary">
               Rapaport Stone Listings
@@ -145,7 +151,7 @@ export const Search = () => {
             )}
           />
         </Box>
-        <Box py={4} className={classes.cardWrapper}>
+        <Box py={4} px={1} className={classes.cardWrapper}>
           <StoneList stones={stones} />
         </Box>
       </Container>
