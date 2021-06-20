@@ -100,7 +100,6 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    console.log("selected", selectedOption);
     if (selectedOption) {
       let filteredStones = stoneData.filter(
         (s) => s.type === selectedOption.type
