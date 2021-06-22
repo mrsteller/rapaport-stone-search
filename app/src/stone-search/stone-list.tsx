@@ -1,20 +1,8 @@
 import React from "react";
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  Tooltip,
-  Typography,
-  Zoom,
-} from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { ReactComponent as Picture } from "../assets/diamond.svg";
-import diamond from "../assets/diamond-side.jpg";
-import ruby from "../assets/ruby-dark.jpg";
-import sapphire from "../assets/sapphire-blue.jpg";
+import { StoneCard } from "./stone-card";
 
 import { Stone } from "./models";
 
@@ -70,35 +58,7 @@ export const StoneList = ({ stones }: StoneListProps) => {
       <Grid spacing={2} container>
         {stones.map((s, i) => (
           <Grid item xs={12} sm={6} md={3} key={i}>
-            <Zoom in={true}>
-              <Card key={i} className={classes.card}>
-                <CardMedia
-                  className={classes.media}
-                  image={
-                    s.type === "Sapphire"
-                      ? sapphire
-                      : s.type === "Ruby"
-                      ? ruby
-                      : diamond
-                  }
-                  title={`${s.shape} ${s.type}`}
-                />
-                <Tooltip title="Clarity">
-                  <Avatar sizes="small" className={classes.avatar}>
-                    <Typography variant="body2">{s.clarity}</Typography>
-                  </Avatar>
-                </Tooltip>
-                <CardContent className={classes.cardContent}>
-                  <Typography variant="overline">{s.shape}</Typography>
-                  <Typography variant="h5" color="secondary">
-                    {s.type}
-                  </Typography>
-                  {s.color && (
-                    <Typography variant="body2">Color: {s.color}</Typography>
-                  )}
-                </CardContent>
-              </Card>
-            </Zoom>
+            <StoneCard stone={s} />
           </Grid>
         ))}
       </Grid>
