@@ -1,6 +1,5 @@
 # Rapaport Stone Search
 
-Dear Candidate,
 Please find below our coding exercise. You can use vanilla JavaScript or any modern frontend framework or
 library.
 
