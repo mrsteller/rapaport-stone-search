@@ -31,3 +31,4 @@ Shape: Emerald in Diamond
 Color: E in Diamond
 
 2) Add last 3 recent searches as the top options in the dropdown.
+4) Show us your creativity and styling skills.
